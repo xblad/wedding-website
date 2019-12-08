@@ -31,6 +31,7 @@ namespace _4ever20.Guests
                             Id = reader.GetValueOrDefault<short>("GuestId"),
                             FirstName = reader.GetValueOrDefault<string>("FirstName"),
                             LastName = reader.GetValueOrDefault<string>("LastName"),
+                            About = reader.GetValueOrDefault<string>("About"),
                             InvitationSentDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSentDateTime"),
                             InvitationSeenDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSeenDateTime"),
                             IsGoing = reader.GetValueOrDefault<bool?>("IsGoing")
@@ -51,6 +52,7 @@ namespace _4ever20.Guests
         public short Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string About { get; set; }
         public DateTime? InvitationSentDateTime { get; set; }
         public DateTime? InvitationSeenDateTime { get; set; }
         public bool InvitationSent => InvitationSentDateTime.HasValue;

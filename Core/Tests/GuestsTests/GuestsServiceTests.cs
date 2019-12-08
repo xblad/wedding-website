@@ -67,12 +67,12 @@ namespace _4ever20.GuestsTests
         public void GetGuestsShouldReturnData()
         {
             SetupDataReader(dataReaderMock,
-                new[] { "GuestId", "FirstName", "LastName", "InvitationSentDateTime", "InvitationSeenDateTime", "IsGoing" },
+                new[] { "GuestId", "FirstName", "LastName", "About", "InvitationSentDateTime", "InvitationSeenDateTime", "IsGoing" },
                 new[]
                 {
-                    new object[] { (short)1, "Ivan", "Ivanov", null, null, null },
-                    new object[] { (short)2, "Petr", "Petrov", new DateTime(2020, 1, 1), null, null },
-                    new object[] { (short)3, "Olga", "Barmanova", new DateTime(2020, 1, 20), new DateTime(2020, 2, 5), true },
+                    new object[] { (short)1, "Ivan", "Ivanov", "All about Ivan", null, null, null },
+                    new object[] { (short)2, "Petr", "Petrov", null, new DateTime(2020, 1, 1), null, null },
+                    new object[] { (short)3, "Olga", "Barmanova", "I'm Olga!", new DateTime(2020, 1, 20), new DateTime(2020, 2, 5), true },
                 });
 
             var guestsService = new GuestsService(databaseMock.Object);
@@ -81,10 +81,10 @@ namespace _4ever20.GuestsTests
 
             guests.Should().BeEquivalentTo(new[]
             {
-                new GuestEntry { Id = 1, FirstName = "Ivan", LastName = "Ivanov" },
+                new GuestEntry { Id = 1, FirstName = "Ivan", LastName = "Ivanov", About = "All about Ivan" },
                 new GuestEntry { Id = 2, FirstName = "Petr", LastName = "Petrov",
                     InvitationSentDateTime = new DateTime(2020, 1, 1) },
-                new GuestEntry { Id = 3, FirstName = "Olga", LastName = "Barmanova",
+                new GuestEntry { Id = 3, FirstName = "Olga", LastName = "Barmanova", About = "I'm Olga!",
                     InvitationSentDateTime = new DateTime(2020, 1, 20), InvitationSeenDateTime = new DateTime(2020, 2, 5), IsGoing = true },
             });
         }
