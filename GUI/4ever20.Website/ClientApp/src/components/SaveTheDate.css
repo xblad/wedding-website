@@ -1,0 +1,95 @@
+﻿:root {
+    --cyan-color: rgba(9, 251, 211, 1);
+    --magenta-color: rgba(254, 83, 187, 1);
+    --yellow-color: rgba(245, 211, 0, 1);
+    --chunk-color: rgba(224, 219, 209, 1);
+    --cyan-opacity-color: rgba(9, 251, 211, 0.70);
+    --magenta-opacity-color: rgba(254, 83, 187, 0.70);
+    --yellow-opacity-color: rgba(245, 211, 0, 0.70);
+}
+
+body {
+    color: white;
+}
+
+::-moz-selection {
+    background: var(--yellow-color);
+}
+
+::selection {
+    background: var(--yellow-color);
+}
+
+.appeal {
+    font-family: 'Clip', cursive;
+    color: var(--chunk-color);
+    text-transform: uppercase;
+}
+
+.names {
+    font-family: 'Pacifico', cursive;
+    color: var(--chunk-color);
+}
+
+.date {
+    font-family: 'Clip';
+}
+
+.cyan {
+    color: var(--cyan-color);
+    text-shadow: 0 0 .15em var(--cyan-opacity-color);
+}
+.magenta {
+    color: var(--magenta-color);
+    text-shadow: 0 0 .15em var(--magenta-opacity-color);
+}
+.yellow {
+    color: var(--yellow-color);
+    text-shadow: 0 0 .15em var(--yellow-opacity-color);
+}
+
+.info {
+    margin: 1em 0;
+}
+
+.btn {
+    margin: 0 .25em;
+}
+
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+    background: var(--cyan-color) !important;
+    text-shadow: 0 0 .1em #000 !important;
+    border: 0;
+    box-shadow: 0 0 .15em var(--cyan-opacity-color) !important;
+}
+
+.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited {
+    background: var(--magenta-color) !important;
+    text-shadow: 0 0 .1em #000 !important;
+    border: 0;
+    box-shadow: 0 0 .15em var(--magenta-opacity-color) !important;
+}
+
+.btn-link, .btn-link:hover, .btn-link:active, .btn-link:visited {
+    color: var(--magenta-color) !important;
+    text-shadow: 0 0 .15em var(--magenta-opacity-color) !important;
+}
+
+label {
+    color: white;
+}
+
+input[type=text] {
+    margin: .15em 0;
+    background: black;
+    color: white;
+}
+
+input[type=text]:focus {
+    margin: .15em 0;
+    background: black;
+    color: white;
+    border-color: var(--yellow-opacity-color);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 .25em var(--yellow-opacity-color);
+    outline: 0 none;
+}

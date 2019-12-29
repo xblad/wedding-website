@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 
 namespace _4ever20.Guests
 {
@@ -15,6 +14,26 @@ namespace _4ever20.Guests
         public GuestsService(IDatabase database)
         {
             this.database = database;
+        }
+
+        public byte[] GetGuestPhoto(string firstName, string lastName)
+        {
+            using (var dbConnection = database.CreateOpenConnection())
+            {
+                var cmd = database.CreateStoredProcCommand("[dbo].[sp_GetGuestPhoto]", dbConnection);
+                
+                var firstNameParam = cmd.CreateParameter();
+                firstNameParam.ParameterName = "@FirstName";
+                firstNameParam.Value = firstName;
+                cmd.Parameters.Add(firstNameParam);
+                
+                var lastNameParam = cmd.CreateParameter();
+                lastNameParam.ParameterName = "@LastName";
+                lastNameParam.Value = lastName;
+                cmd.Parameters.Add(lastNameParam);
+
+                return (byte[])cmd.ExecuteScalar();
+            }
         }
 
         public IEnumerable<GuestEntry> GetGuests()
@@ -32,6 +51,7 @@ namespace _4ever20.Guests
                             FirstName = reader.GetValueOrDefault<string>("FirstName"),
                             LastName = reader.GetValueOrDefault<string>("LastName"),
                             About = reader.GetValueOrDefault<string>("About"),
+                            InvitationGuid = reader.GetValueOrDefault<Guid?>("InvitationGuid"),
                             InvitationSentDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSentDateTime"),
                             InvitationSeenDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSeenDateTime"),
                             IsGoing = reader.GetValueOrDefault<bool?>("IsGoing")
@@ -45,6 +65,7 @@ namespace _4ever20.Guests
     public interface IGuestsService
     {
         IEnumerable<GuestEntry> GetGuests();
+        byte[] GetGuestPhoto(string firstName, string lastName);
     }
 
     public class GuestEntry
@@ -53,6 +74,7 @@ namespace _4ever20.Guests
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string About { get; set; }
+        public Guid? InvitationGuid { get; set; }
         public DateTime? InvitationSentDateTime { get; set; }
         public DateTime? InvitationSeenDateTime { get; set; }
         public bool InvitationSent => InvitationSentDateTime.HasValue;

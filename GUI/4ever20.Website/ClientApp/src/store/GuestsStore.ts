@@ -7,6 +7,7 @@ import { AppThunkAction } from './';
 export interface GuestsState {
     isLoading: boolean;
     guestList: Guest[];
+    currentGuest?: Guest;
 }
 
 export interface Guest {
@@ -14,8 +15,12 @@ export interface Guest {
     firstName: string;
     lastName: string;
     fullName: string;
-    summary: string;
+    about: string;
     img: string;
+    invitationGuid?: string;
+    invitationSentDateTime?: Date;
+    invitationSeenDateTime?: Date;
+    isGoing?: boolean;
 }
 
 // -----------------
@@ -31,25 +36,48 @@ interface ReceiveGuestsAction {
     guestList: Guest[];
 }
 
+interface SetCurrentGuestAction {
+    type: 'SET_CURRENT_GUEST';
+    currentGuestFilter: (g: Guest) => boolean;
+}
+
+interface IndicateAttendanceAction {
+    type: 'INDICATE_ATTENDANCE';
+    isGoing: boolean;
+}
+
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = RequestGuestsAction | ReceiveGuestsAction;
+type KnownAction = RequestGuestsAction | ReceiveGuestsAction | SetCurrentGuestAction | IndicateAttendanceAction;
 
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
 // They don't directly mutate state, but they can have external side-effects (such as loading data).
 
 export const actionCreators = {
-    requestGuests: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    requestGuests: (currentGuestFilter: (g: Guest) => boolean): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let state = getState();
         if (state && state.guests && !state.guests.guestList.length) {
             fetch(`guest`)
                 .then(response => response.json() as Promise<Guest[]>)
                 .then(data => {
                     dispatch({ type: 'RECEIVE_GUESTS', guestList: data });
+                    dispatch({ type: 'SET_CURRENT_GUEST', currentGuestFilter: currentGuestFilter })
                 });
 
             dispatch({ type: 'REQUEST_GUESTS' });
+        }
+    },
+    setCurrentGuest: (currentGuestFilter: (g: Guest) => boolean): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        let state = getState();
+        if (state && state.guests && !state.guests.currentGuest && state.guests.guestList.length) {
+            dispatch({ type: 'SET_CURRENT_GUEST', currentGuestFilter: currentGuestFilter });
+        }
+    },
+    indicateAttendance: (isGoing: boolean): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        let state = getState();
+        if (state && state.guests && state.guests.currentGuest && state.guests.currentGuest.isGoing !== true && state.guests.currentGuest.isGoing !== false) {
+            dispatch({ type: 'INDICATE_ATTENDANCE', isGoing: isGoing });
         }
     }
 };
@@ -68,14 +96,34 @@ export const reducer: Reducer<GuestsState> = (state: GuestsState | undefined, in
     switch (action.type) {
         case 'REQUEST_GUESTS':
             return {
-                guestList: state.guestList,
+                ...state,
                 isLoading: true
             };
         case 'RECEIVE_GUESTS':
             return {
+                ...state,
                 guestList: action.guestList,
                 isLoading: false
             };
+        case 'SET_CURRENT_GUEST':
+            return {
+                ...state,
+                currentGuest: state.guestList.find(action.currentGuestFilter),
+                isLoading: false
+            }
+        case 'INDICATE_ATTENDANCE':
+            // TODO put in database and reload guests list afterwards
+            if (!state.currentGuest)
+                return { guestList: state.guestList, isLoading: false };
+
+            if (typeof state.currentGuest.isGoing === "boolean") {
+                return state;
+            }
+
+            return {
+                ...state,
+                currentGuest: { ...state.currentGuest, isGoing: action.isGoing }
+            }
     }
 
     return state;

@@ -1,3 +1,5 @@
+using _4ever20.Data.Databases;
+using _4ever20.Guests;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +31,9 @@ namespace _4ever20.Website
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSingleton<IDatabase, SqlServerDatabase>();
+            services.AddSingleton<IGuestsService, GuestsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

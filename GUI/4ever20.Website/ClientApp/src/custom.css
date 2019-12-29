@@ -1,4 +1,13 @@
 /* Provide sufficient contrast against white background */
+@font-face {
+    font-family: 'Clip';
+    src: local('Clip'), url(./fonts/clip.regular.ttf) format('truetype');
+}
+
+body {
+    background: black;
+}
+
 a {
   color: #0366d6;
 }
