@@ -16,6 +16,35 @@ namespace _4ever20.Guests
             this.database = database;
         }
 
+        public bool IndicateAttendance(Guid invitationGuid, bool response)
+        {
+            using (var dbConnection = database.CreateOpenConnection())
+            {
+                var cmd = database.CreateStoredProcCommand("[dbo].[sp_IndicateAttendance]", dbConnection);
+
+                var invitationGuidParam = cmd.CreateParameter();
+                invitationGuidParam.ParameterName = "@InvitationGuid";
+                invitationGuidParam.Value = invitationGuid;
+                cmd.Parameters.Add(invitationGuidParam);
+
+                var responseParam = cmd.CreateParameter();
+                responseParam.ParameterName = "@Response";
+                responseParam.Value = response;
+                cmd.Parameters.Add(responseParam);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return invitationGuid == reader.GetValueOrDefault<Guid?>("InvitationGuid")
+                            && response == reader.GetValueOrDefault<bool?>("Response");
+                    }
+                }
+
+                return false;
+            }
+        }
+
         public byte[] GetGuestPhoto(string firstName, string lastName)
         {
             using (var dbConnection = database.CreateOpenConnection())
@@ -65,6 +94,7 @@ namespace _4ever20.Guests
     public interface IGuestsService
     {
         IEnumerable<GuestEntry> GetGuests();
+        bool IndicateAttendance(Guid invitationGuid, bool response);
         byte[] GetGuestPhoto(string firstName, string lastName);
     }
 

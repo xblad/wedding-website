@@ -23,15 +23,17 @@ namespace _4ever20.Website.Controllers
         }
 
         [HttpGet("photo/{firstName}_{lastName}")]
-        public IActionResult Get(string firstName, string lastName)
+        public IActionResult GetGuestPhoto(string firstName, string lastName)
         {
+            _logger.LogDebug($"call: GetGuestPhoto({firstName}, {lastName})");
             var photo = _guestsService.GetGuestPhoto(firstName, lastName);
             return File(photo, "image/png");
         }
 
         [HttpGet]
-        public IEnumerable<Guest> Get()
+        public IEnumerable<Guest> GetGuests()
         {
+            _logger.LogDebug($"call: GetGuests()");
             return _guestsService.GetGuests()
                 .Select(g => new Guest 
                 {

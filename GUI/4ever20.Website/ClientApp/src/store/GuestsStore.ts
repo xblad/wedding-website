@@ -76,8 +76,18 @@ export const actionCreators = {
     },
     indicateAttendance: (isGoing: boolean): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let state = getState();
-        if (state && state.guests && state.guests.currentGuest && state.guests.currentGuest.isGoing !== true && state.guests.currentGuest.isGoing !== false) {
-            dispatch({ type: 'INDICATE_ATTENDANCE', isGoing: isGoing });
+        if (state && state.guests && state.guests.currentGuest && typeof state.guests.currentGuest.isGoing !== "boolean") {
+            fetch(`invitation/${state.guests.currentGuest.invitationGuid}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: isGoing.toString()
+            })
+                .then(r => {
+                    if (r.ok)
+                        dispatch({ type: 'INDICATE_ATTENDANCE', isGoing: isGoing });
+                });
         }
     }
 };
@@ -112,7 +122,6 @@ export const reducer: Reducer<GuestsState> = (state: GuestsState | undefined, in
                 isLoading: false
             }
         case 'INDICATE_ATTENDANCE':
-            // TODO put in database and reload guests list afterwards
             if (!state.currentGuest)
                 return { guestList: state.guestList, isLoading: false };
 

@@ -21,8 +21,10 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
     }
 
     // This method is called when the route parameters change
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps : SaveTheDateProps) {
         this.ensureDataFetched();
+        if (!prevProps.currentGuest && this.props.currentGuest)
+            this.props.history.push(`/save-the-date/${this.props.currentGuest.invitationGuid}`);
     }
 
     public render() {
@@ -48,7 +50,8 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
                                     <input type="text" className="form-control text-center"
                                         placeholder="Invitation ID" title="ID Приглашения"
                                         value={this.props.currentGuest && this.props.currentGuest.invitationGuid}
-                                        onChange={event => this.trySetCurrentGuest(event.target.value)} />
+                                        onChange={event => this.trySetCurrentGuest(event.target.value)}
+                                        disabled={this.props.isLoading} />
                                 </div>;
                             else if (this.props.currentGuest.isGoing === true)
                                 return <div>
@@ -56,7 +59,7 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
                                 </div>;
                             else if (this.props.currentGuest.isGoing === false)
                                 return <div>
-                                    <h3 title={this.props.currentGuest.firstName + ', жаль, что не придете :('}>{this.props.currentGuest.firstName}, it is a shame you're not coming <FontAwesomeIcon className="yellow" icon={faFrown} /></h3>
+                                    <h3 title={this.props.currentGuest.firstName + ', очень жаль, что не придете :('}>{this.props.currentGuest.firstName}, it's a shame you're not coming <FontAwesomeIcon className="yellow" icon={faFrown} /></h3>
                                 </div>;
                             else
                                 return <div>
