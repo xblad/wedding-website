@@ -126,7 +126,6 @@
     <Folder Include="dbo\Views\" />
     <Folder Include="Storage\" />
     <Folder Include="dbo\Stored Procedures\" />
-    <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Guests.sql">
@@ -162,9 +161,9 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="Security\Permissions.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="4ever20.SqlServerDatabase.publish.xml" />
+    <None Include="4ever20.SqlServerDatabase.Development.publish.xml" />
   </ItemGroup>
 </Project>

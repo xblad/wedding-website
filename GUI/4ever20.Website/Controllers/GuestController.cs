@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using _4ever20.Guests;
 using _4ever20.Website.Model;
@@ -23,17 +21,17 @@ namespace _4ever20.Website.Controllers
         }
 
         [HttpGet("photo/{firstName}_{lastName}")]
-        public IActionResult GetGuestPhoto(string firstName, string lastName)
+        public async Task<IActionResult> GetGuestPhotoAsync(string firstName, string lastName)
         {
-            _logger.LogDebug($"call: GetGuestPhoto({firstName}, {lastName})");
-            var photo = _guestsService.GetGuestPhoto(firstName, lastName);
+            _logger.LogDebug($"call: GetGuestPhotoAsync({firstName}, {lastName})");
+            var photo = await _guestsService.GetGuestPhotoAsync(firstName, lastName).ConfigureAwait(false);
             return File(photo, "image/png");
         }
 
         [HttpGet]
         public async IAsyncEnumerable<Guest> GetGuestsAsync()
         {
-            _logger.LogDebug($"call: GetGuests()");
+            _logger.LogDebug($"call: GetGuestsAsync()");
             await foreach(var g in _guestsService.GetGuestsAsync())
             {
                 yield return new Guest

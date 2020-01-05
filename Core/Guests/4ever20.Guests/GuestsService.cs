@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace _4ever20.Guests
 {
@@ -17,53 +18,49 @@ namespace _4ever20.Guests
             this.database = database;
         }
 
-        public bool IndicateAttendance(Guid invitationGuid, bool response)
+        public async Task<bool> IndicateAttendanceAsync(Guid invitationGuid, bool response)
         {
-            using (var dbConnection = database.CreateOpenConnection())
+            using var dbConnection = await database.CreateOpenConnectionAsync().ConfigureAwait(false);
+            var cmd = database.CreateStoredProcCommand("[dbo].[sp_IndicateAttendance]", dbConnection);
+
+            var invitationGuidParam = cmd.CreateParameter();
+            invitationGuidParam.ParameterName = "@InvitationGuid";
+            invitationGuidParam.Value = invitationGuid;
+            cmd.Parameters.Add(invitationGuidParam);
+
+            var responseParam = cmd.CreateParameter();
+            responseParam.ParameterName = "@Response";
+            responseParam.Value = response;
+            cmd.Parameters.Add(responseParam);
+
+            using (var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
             {
-                var cmd = database.CreateStoredProcCommand("[dbo].[sp_IndicateAttendance]", dbConnection);
-
-                var invitationGuidParam = cmd.CreateParameter();
-                invitationGuidParam.ParameterName = "@InvitationGuid";
-                invitationGuidParam.Value = invitationGuid;
-                cmd.Parameters.Add(invitationGuidParam);
-
-                var responseParam = cmd.CreateParameter();
-                responseParam.ParameterName = "@Response";
-                responseParam.Value = response;
-                cmd.Parameters.Add(responseParam);
-
-                using (var reader = cmd.ExecuteReader())
+                while (await reader.ReadAsync().ConfigureAwait(false))
                 {
-                    while (reader.Read())
-                    {
-                        return invitationGuid == reader.GetValueOrDefault<Guid?>("InvitationGuid")
-                            && response == reader.GetValueOrDefault<bool?>("Response");
-                    }
+                    return invitationGuid == await reader.GetValueOrDefaultAsync<Guid?>("InvitationGuid").ConfigureAwait(false)
+                        && response == await reader.GetValueOrDefaultAsync<bool?>("Response").ConfigureAwait(false);
                 }
-
-                return false;
             }
+
+            return false;
         }
 
-        public byte[] GetGuestPhoto(string firstName, string lastName)
+        public async Task<byte[]> GetGuestPhotoAsync(string firstName, string lastName)
         {
-            using (var dbConnection = database.CreateOpenConnection())
-            {
-                var cmd = database.CreateStoredProcCommand("[dbo].[sp_GetGuestPhoto]", dbConnection);
-                
-                var firstNameParam = cmd.CreateParameter();
-                firstNameParam.ParameterName = "@FirstName";
-                firstNameParam.Value = firstName;
-                cmd.Parameters.Add(firstNameParam);
-                
-                var lastNameParam = cmd.CreateParameter();
-                lastNameParam.ParameterName = "@LastName";
-                lastNameParam.Value = lastName;
-                cmd.Parameters.Add(lastNameParam);
+            using var dbConnection = await database.CreateOpenConnectionAsync().ConfigureAwait(false);
+            var cmd = database.CreateStoredProcCommand("[dbo].[sp_GetGuestPhoto]", dbConnection);
 
-                return (byte[])cmd.ExecuteScalar();
-            }
+            var firstNameParam = cmd.CreateParameter();
+            firstNameParam.ParameterName = "@FirstName";
+            firstNameParam.Value = firstName;
+            cmd.Parameters.Add(firstNameParam);
+
+            var lastNameParam = cmd.CreateParameter();
+            lastNameParam.ParameterName = "@LastName";
+            lastNameParam.Value = lastName;
+            cmd.Parameters.Add(lastNameParam);
+
+            return (byte[])await cmd.ExecuteScalarAsync().ConfigureAwait(false);
         }
 
         public async IAsyncEnumerable<GuestEntry> GetGuestsAsync()
@@ -75,14 +72,14 @@ namespace _4ever20.Guests
             {
                 yield return new GuestEntry
                 {
-                    Id = reader.GetValueOrDefault<short>("GuestId"),
-                    FirstName = reader.GetValueOrDefault<string>("FirstName"),
-                    LastName = reader.GetValueOrDefault<string>("LastName"),
-                    About = reader.GetValueOrDefault<string>("About"),
-                    InvitationGuid = reader.GetValueOrDefault<Guid?>("InvitationGuid"),
-                    InvitationSentDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSentDateTime"),
-                    InvitationSeenDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSeenDateTime"),
-                    IsGoing = reader.GetValueOrDefault<bool?>("IsGoing")
+                    Id = await reader.GetValueOrDefaultAsync<short>("GuestId").ConfigureAwait(false),
+                    FirstName = await reader.GetValueOrDefaultAsync<string>("FirstName").ConfigureAwait(false),
+                    LastName = await reader.GetValueOrDefaultAsync<string>("LastName").ConfigureAwait(false),
+                    About = await reader.GetValueOrDefaultAsync<string>("About").ConfigureAwait(false),
+                    InvitationGuid = await reader.GetValueOrDefaultAsync<Guid?>("InvitationGuid").ConfigureAwait(false),
+                    InvitationSentDateTime = await reader.GetValueOrDefaultAsync<DateTime?>("InvitationSentDateTime").ConfigureAwait(false),
+                    InvitationSeenDateTime = await reader.GetValueOrDefaultAsync<DateTime?>("InvitationSeenDateTime").ConfigureAwait(false),
+                    IsGoing = await reader.GetValueOrDefaultAsync<bool?>("IsGoing").ConfigureAwait(false)
                 };
             }
         }
@@ -91,8 +88,8 @@ namespace _4ever20.Guests
     public interface IGuestsService
     {
         IAsyncEnumerable<GuestEntry> GetGuestsAsync();
-        bool IndicateAttendance(Guid invitationGuid, bool response);
-        byte[] GetGuestPhoto(string firstName, string lastName);
+        Task<bool> IndicateAttendanceAsync(Guid invitationGuid, bool response);
+        Task<byte[]> GetGuestPhotoAsync(string firstName, string lastName);
     }
 
     public class GuestEntry
