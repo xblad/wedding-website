@@ -40,6 +40,7 @@ namespace _4ever20.Website.Controllers
         public async Task<IActionResult> GetInvitationAsync(Guid invitationGuid)
         {
             _logger.LogDebug($"call: GetInvitationAsync({invitationGuid})");
+            await _guestsService.ReadInvitationAsync(invitationGuid);
             var invitation = await _guestsService.GetGuestsAsync()
                 .Where(g => g.InvitationGuid == invitationGuid)
                 .Select(g => new Invitation

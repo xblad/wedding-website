@@ -45,6 +45,27 @@ namespace _4ever20.Guests
             return false;
         }
 
+        public async Task<bool> ReadInvitationAsync(Guid invitationGuid)
+        {
+            using var dbConnection = await database.CreateOpenConnectionAsync().ConfigureAwait(false);
+            var cmd = database.CreateStoredProcCommand("[dbo].[sp_ReadInvitation]", dbConnection);
+
+            var invitationGuidParam = cmd.CreateParameter();
+            invitationGuidParam.ParameterName = "@InvitationGuid";
+            invitationGuidParam.Value = invitationGuid;
+            cmd.Parameters.Add(invitationGuidParam);
+
+            using (var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
+            {
+                while (await reader.ReadAsync().ConfigureAwait(false))
+                {
+                    return invitationGuid == await reader.GetValueOrDefaultAsync<Guid?>("InvitationGuid").ConfigureAwait(false);
+                }
+            }
+
+            return false;
+        }
+
         public async Task<byte[]> GetGuestPhotoAsync(string firstName, string lastName)
         {
             using var dbConnection = await database.CreateOpenConnectionAsync().ConfigureAwait(false);
@@ -89,6 +110,7 @@ namespace _4ever20.Guests
     {
         IAsyncEnumerable<GuestEntry> GetGuestsAsync();
         Task<bool> IndicateAttendanceAsync(Guid invitationGuid, bool response);
+        Task<bool> ReadInvitationAsync(Guid invitationGuid);
         Task<byte[]> GetGuestPhotoAsync(string firstName, string lastName);
     }
 
