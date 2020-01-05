@@ -5,13 +5,13 @@ import { RouteComponentProps } from 'react-router';
 import { ApplicationState } from '../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faGlassCheers, faFrown } from '@fortawesome/free-solid-svg-icons';
-import * as GuestsStore from '../store/GuestsStore';
+import * as InvitationStore from '../store/InvitationStore';
 import promo from '../videos/Forever twenty.mp4';
 import './SaveTheDate.css';
 
 type SaveTheDateProps =
-    GuestsStore.GuestsState &
-    typeof GuestsStore.actionCreators &
+    InvitationStore.InvitationState &
+    typeof InvitationStore.actionCreators &
     RouteComponentProps<{ invitationGuid: string }>;
 
 class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
@@ -23,8 +23,9 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
     // This method is called when the route parameters change
     public componentDidUpdate(prevProps : SaveTheDateProps) {
         this.ensureDataFetched();
-        if (!prevProps.currentGuest && this.props.currentGuest)
-            this.props.history.push(`/save-the-date/${this.props.currentGuest.invitationGuid}`);
+        if (!prevProps.invitationObject && this.props.invitationObject)
+            this.props.history.replace(`/save-the-date/${this.props.invitationObject.invitationGuid}`);
+        if (prevProps.lastError !== this.props.lastError) alert(this.props.lastError);
     }
 
     public render() {
@@ -45,28 +46,28 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
                     </div>
                     <div className="form-group text-center col my-auto">
                         {(() => {
-                            if (!this.props.currentGuest || !this.props.currentGuest.invitationGuid)
+                            if (!this.props.invitationObject || !this.props.invitationObject.invitationGuid)
                                 return <div>
                                     <input type="text" className="form-control text-center"
                                         placeholder="Invitation ID" title="ID Приглашения"
-                                        value={this.props.currentGuest && this.props.currentGuest.invitationGuid}
-                                        onChange={event => this.trySetCurrentGuest(event.target.value)}
+                                        value={this.props.invitationObject && this.props.invitationObject.invitationGuid}
+                                        onChange={event => this.props.requestInvitation(event.target.value)}
                                         ref={(input) => { input && input.focus() }}
                                         disabled={this.props.isLoading} />
                                 </div>;
-                            else if (this.props.currentGuest.isGoing === true)
+                            else if (this.props.invitationObject.isGoing === true)
                                 return <div>
-                                    <h3 title={this.props.currentGuest.firstName + ', спасибо, что почтите нас своим присутствием! Увидимся :)'}>{this.props.currentGuest.firstName}, thanks for indicating you are coming! See ya <FontAwesomeIcon className="yellow" icon={faGlassCheers} /></h3>
+                                    <h3 title={this.props.invitationObject.firstName + ', спасибо, что почтите нас своим присутствием! Увидимся :)'}>{this.props.invitationObject.firstName}, thanks for indicating you are coming! See ya <FontAwesomeIcon className="yellow" icon={faGlassCheers} /></h3>
                                 </div>;
-                            else if (this.props.currentGuest.isGoing === false)
+                            else if (this.props.invitationObject.isGoing === false)
                                 return <div>
-                                    <h3 title={this.props.currentGuest.firstName + ', очень жаль, что не придете :('}>{this.props.currentGuest.firstName}, it's a shame you're not coming <FontAwesomeIcon className="yellow" icon={faFrown} /></h3>
+                                    <h3 title={this.props.invitationObject.firstName + ', очень жаль, что не придете :('}>{this.props.invitationObject.firstName}, it's a shame you're not coming <FontAwesomeIcon className="yellow" icon={faFrown} /></h3>
                                 </div>;
                             else
                                 return <div>
-                                    <p className="mb-3" title={this.props.currentGuest.firstName + ', пожалуйста дайте нам знать, если придёте'}>Dear {this.props.currentGuest.firstName}, please indicate your attendance</p>
-                                    <button type="button" className="btn btn-success btn-lg ml-3" onClick={() => { this.props.indicateAttendance(true); }} title="Я в деле!">I'm in</button>
-                                    <button type="button" className="btn btn-link btn-lg ml-3" onClick={() => { this.props.indicateAttendance(false); }} title="Не могу прийти :(">Sorry, can't make it</button>
+                                    <p className="mb-3" title={this.props.invitationObject.firstName + ', пожалуйста дайте нам знать, если придёте'}>Dear {this.props.invitationObject.firstName}, please indicate your attendance</p>
+                                    <button type="button" className="btn btn-success btn-lg ml-3" onClick={() => { this.props.indicateAttendance(true); }} title="Я в деле!" disabled={this.props.isLoading} >I'm in</button>
+                                    <button type="button" className="btn btn-link btn-lg ml-3" onClick={() => { this.props.indicateAttendance(false); }} title="Не могу прийти :(" disabled={this.props.isLoading} >Sorry, can't make it</button>
                                 </div>;
                         })()}
                     </div>
@@ -75,24 +76,13 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
         );
     }
 
-    private trySetCurrentGuest(invitationGuid: string) {
-        this.props.setCurrentGuest(this.getFilterByInvitationGuid(invitationGuid))
-    }
-
     private ensureDataFetched() {
         const invitationGuid = this.props.match.params.invitationGuid;
-        this.props.requestGuests(this.getFilterByInvitationGuid(invitationGuid));
-    }
-
-    private getFilterByInvitationGuid(invitationGuid: string) {
-        return (g: GuestsStore.Guest) =>
-            invitationGuid !== undefined
-            && g.invitationGuid !== undefined
-            && g.invitationGuid.toLowerCase() === invitationGuid.toLowerCase();
+        this.props.requestInvitation(invitationGuid);
     }
 };
 
 export default connect(
-    (state: ApplicationState) => state.guests,
-    GuestsStore.actionCreators
+    (state: ApplicationState) => state.invitation,
+    InvitationStore.actionCreators
 )(SaveTheDate as any);

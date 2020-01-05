@@ -22,7 +22,9 @@ namespace _4ever20.Website.Controllers
             _guestsService = guestsService;
         }
 
-        [HttpPost("{invitationGuid}")]
+        [HttpPost("attendance/{invitationGuid}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> IndicateAttendanceAsync(Guid invitationGuid, [FromBody]bool response)
         {
             _logger.LogDebug($"call: IndicateAttendanceAsync({invitationGuid}, {response})");
@@ -30,6 +32,26 @@ namespace _4ever20.Website.Controllers
                 return Ok();
             else
                 return BadRequest();
+        }
+
+        [HttpGet("{invitationGuid}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetInvitationAsync(Guid invitationGuid)
+        {
+            _logger.LogDebug($"call: GetInvitationAsync({invitationGuid})");
+            var invitation = await _guestsService.GetGuestsAsync()
+                .Where(g => g.InvitationGuid == invitationGuid)
+                .Select(g => new Invitation
+                {
+                    InvitationGuid = g.InvitationGuid,
+                    FirstName = g.FirstName,
+                    LastName = g.LastName,
+                    InvitationSeen = g.InvitationSeen,
+                    IsGoing = g.IsGoing
+                }).FirstOrDefaultAsync().ConfigureAwait(false);
+
+            return invitation != null ? Ok(invitation) : (IActionResult)NotFound(invitation);
         }
     }
 }
