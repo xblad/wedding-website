@@ -23,10 +23,10 @@ namespace _4ever20.Website.Controllers
         }
 
         [HttpPost("{invitationGuid}")]
-        public IActionResult IndicateAttendance(Guid invitationGuid, [FromBody]bool response)
+        public async Task<IActionResult> IndicateAttendanceAsync(Guid invitationGuid, [FromBody]bool response)
         {
-            _logger.LogDebug($"call: IndicateAttendance({invitationGuid}, {response})");
-            if (_guestsService.IndicateAttendance(invitationGuid, response))
+            _logger.LogDebug($"call: IndicateAttendanceAsync({invitationGuid}, {response})");
+            if (await _guestsService.IndicateAttendanceAsync(invitationGuid, response).ConfigureAwait(false))
                 return Ok();
             else
                 return BadRequest();
