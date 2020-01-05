@@ -51,6 +51,7 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
                                         placeholder="Invitation ID" title="ID Приглашения"
                                         value={this.props.currentGuest && this.props.currentGuest.invitationGuid}
                                         onChange={event => this.trySetCurrentGuest(event.target.value)}
+                                        ref={(input) => { input && input.focus() }}
                                         disabled={this.props.isLoading} />
                                 </div>;
                             else if (this.props.currentGuest.isGoing === true)

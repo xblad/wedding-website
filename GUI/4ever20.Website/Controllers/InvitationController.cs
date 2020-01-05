@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace _4ever20.Website.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class InvitationController : ControllerBase
     {
         private readonly ILogger<GuestController> _logger;

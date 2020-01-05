@@ -31,7 +31,7 @@ export default () => (
     <Container>
         <Switch>
             <Route path="/save-the-date/:invitationGuid?" component={SaveTheDate} />
-            <Redirect from="*" to="/save-the-date" />
+            <Redirect exact from="/" to="/save-the-date" />
         </Switch>
     </Container>
 );

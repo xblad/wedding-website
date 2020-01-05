@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace _4ever20.Website.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class GuestController : ControllerBase
     {
         private readonly ILogger<GuestController> _logger;
@@ -31,22 +31,24 @@ namespace _4ever20.Website.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Guest> GetGuests()
+        public async IAsyncEnumerable<Guest> GetGuestsAsync()
         {
             _logger.LogDebug($"call: GetGuests()");
-            return _guestsService.GetGuests()
-                .Select(g => new Guest 
+            await foreach(var g in _guestsService.GetGuestsAsync())
+            {
+                yield return new Guest
                 {
                     Id = g.Id,
                     FirstName = g.FirstName,
                     LastName = g.LastName,
                     About = g.About,
-                    Img = $"guest/photo/{g.FirstName}_{g.LastName}",
+                    Img = $"api/guest/photo/{g.FirstName}_{g.LastName}",
                     InvitationGuid = g.InvitationGuid,
                     InvitationSentDateTime = g.InvitationSentDateTime,
                     InvitationSeenDateTime = g.InvitationSeenDateTime,
                     IsGoing = g.IsGoing
-                });
+                };
+            }
         }
     }
 }

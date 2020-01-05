@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Threading.Tasks;
 
 namespace _4ever20.Data.Databases
 {
@@ -6,6 +7,7 @@ namespace _4ever20.Data.Databases
     {
         IDbConnection CreateConnection();
         IDbCommand CreateCommand();
+        Task<IDbConnection> CreateOpenConnectionAsync();
         IDbConnection CreateOpenConnection();
         IDbCommand CreateCommand(string commandText, IDbConnection connection);
         IDbCommand CreateStoredProcCommand(string procName, IDbConnection connection);

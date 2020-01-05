@@ -7,6 +7,7 @@ using System.Data;
 using Moq;
 using System;
 using FluentAssertions;
+using System.Threading.Tasks;
 
 namespace _4ever20.GuestsTests
 {
@@ -23,6 +24,7 @@ namespace _4ever20.GuestsTests
             var cmdMock = new Mock<IDbCommand>();
             databaseMock.Setup(m => m.CreateConnection()).Returns(connectionMock.Object);
             databaseMock.Setup(m => m.CreateOpenConnection()).Returns(connectionMock.Object);
+            databaseMock.Setup(m => m.CreateOpenConnectionAsync()).Returns(Task.FromResult(connectionMock.Object));
             databaseMock.Setup(m => m.CreateStoredProcCommand(It.IsAny<string>(), connectionMock.Object)).Returns(cmdMock.Object);
 
             cmdMock.Setup(m => m.ExecuteReader()).Returns(dataReaderMock.Object);
@@ -77,7 +79,7 @@ namespace _4ever20.GuestsTests
 
             var guestsService = new GuestsService(databaseMock.Object);
 
-            var guests = guestsService.GetGuests().ToArray();
+            var guests = guestsService.GetGuestsAsync().ToArrayAsync().GetAwaiter().GetResult();
 
             guests.Should().BeEquivalentTo(new[]
             {

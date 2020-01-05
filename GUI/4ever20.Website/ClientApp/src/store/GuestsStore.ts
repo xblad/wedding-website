@@ -58,7 +58,7 @@ export const actionCreators = {
     requestGuests: (currentGuestFilter: (g: Guest) => boolean): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let state = getState();
         if (state && state.guests && !state.guests.guestList.length) {
-            fetch(`guest`)
+            fetch(`api/guest`)
                 .then(response => response.json() as Promise<Guest[]>)
                 .then(data => {
                     dispatch({ type: 'RECEIVE_GUESTS', guestList: data });
@@ -77,7 +77,7 @@ export const actionCreators = {
     indicateAttendance: (isGoing: boolean): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let state = getState();
         if (state && state.guests && state.guests.currentGuest && typeof state.guests.currentGuest.isGoing !== "boolean") {
-            fetch(`invitation/${state.guests.currentGuest.invitationGuid}`, {
+            fetch(`api/invitation/${state.guests.currentGuest.invitationGuid}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

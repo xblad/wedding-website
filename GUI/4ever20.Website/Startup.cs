@@ -2,8 +2,6 @@ using _4ever20.Data.Databases;
 using _4ever20.Guests;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +30,8 @@ namespace _4ever20.Website
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddSingleton<IDatabase, SqlServerDatabase>();
+            string connectionString = Configuration.GetConnectionString("4EVER20");
+            services.AddSingleton<IDatabase>(d => new SqlServerDatabase(connectionString));
             services.AddSingleton<IGuestsService, GuestsService>();
         }
 
@@ -60,7 +59,7 @@ namespace _4ever20.Website
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "api/{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>

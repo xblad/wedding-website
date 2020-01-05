@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Data;
 
 namespace _4ever20.Guests
 {
@@ -65,35 +66,31 @@ namespace _4ever20.Guests
             }
         }
 
-        public IEnumerable<GuestEntry> GetGuests()
+        public async IAsyncEnumerable<GuestEntry> GetGuestsAsync()
         {
-            using (var dbConnection = database.CreateOpenConnection())
+            using var dbConnection = await database.CreateOpenConnectionAsync().ConfigureAwait(false);
+            var cmd = database.CreateStoredProcCommand("[dbo].[sp_GetGuests]", dbConnection);
+            using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+            while (await reader.ReadAsync().ConfigureAwait(false))
             {
-                var cmd = database.CreateStoredProcCommand("[dbo].[sp_GetGuests]", dbConnection);
-                using (var reader = cmd.ExecuteReader())
+                yield return new GuestEntry
                 {
-                    while (reader.Read())
-                    {
-                        yield return new GuestEntry
-                        {
-                            Id = reader.GetValueOrDefault<short>("GuestId"),
-                            FirstName = reader.GetValueOrDefault<string>("FirstName"),
-                            LastName = reader.GetValueOrDefault<string>("LastName"),
-                            About = reader.GetValueOrDefault<string>("About"),
-                            InvitationGuid = reader.GetValueOrDefault<Guid?>("InvitationGuid"),
-                            InvitationSentDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSentDateTime"),
-                            InvitationSeenDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSeenDateTime"),
-                            IsGoing = reader.GetValueOrDefault<bool?>("IsGoing")
-                        };
-                    }
-                }
+                    Id = reader.GetValueOrDefault<short>("GuestId"),
+                    FirstName = reader.GetValueOrDefault<string>("FirstName"),
+                    LastName = reader.GetValueOrDefault<string>("LastName"),
+                    About = reader.GetValueOrDefault<string>("About"),
+                    InvitationGuid = reader.GetValueOrDefault<Guid?>("InvitationGuid"),
+                    InvitationSentDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSentDateTime"),
+                    InvitationSeenDateTime = reader.GetValueOrDefault<DateTime?>("InvitationSeenDateTime"),
+                    IsGoing = reader.GetValueOrDefault<bool?>("IsGoing")
+                };
             }
         }
     }
 
     public interface IGuestsService
     {
-        IEnumerable<GuestEntry> GetGuests();
+        IAsyncEnumerable<GuestEntry> GetGuestsAsync();
         bool IndicateAttendance(Guid invitationGuid, bool response);
         byte[] GetGuestPhoto(string firstName, string lastName);
     }

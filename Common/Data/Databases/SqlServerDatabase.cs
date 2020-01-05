@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace _4ever20.Data.Databases
 {
@@ -10,12 +10,12 @@ namespace _4ever20.Data.Databases
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class SqlServerDatabase : IDatabase
     {
-#if DEBUG
-        private const string ENV = "DEV";
-#else
-        private const string ENV = "PROD";
-#endif
-        private string ConnectionString => $"Server=.\\SQLEXPRESS;Database=4EVER20_{ENV};Integrated Security=SSPI;";
+        private string ConnectionString { get; set; }
+
+        public SqlServerDatabase([Import("ConnectionString")] string connectionString)
+        {
+            ConnectionString = connectionString;
+        }
 
         public IDbCommand CreateCommand() => new SqlCommand();
 
@@ -29,6 +29,14 @@ namespace _4ever20.Data.Databases
         }
 
         public IDbConnection CreateConnection() => new SqlConnection(ConnectionString);
+
+        public async Task<IDbConnection> CreateOpenConnectionAsync()
+        {
+            IDbConnection sqlConnection = CreateConnection();
+            await sqlConnection.OpenAsync().ConfigureAwait(false);
+
+            return sqlConnection;
+        }
 
         public IDbConnection CreateOpenConnection()
         {
