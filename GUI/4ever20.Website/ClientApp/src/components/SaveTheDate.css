@@ -143,3 +143,24 @@ input[type=text]:disabled {
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 .25em var(--magenta-opacity-color);
     }
 }
+
+#promo {
+    width: 100%;
+}
+
+#promo-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+#promo-playpause {
+    width: 100%;
+    position: absolute;
+    margin: auto;
+}
+
+#promo-unmute {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+}

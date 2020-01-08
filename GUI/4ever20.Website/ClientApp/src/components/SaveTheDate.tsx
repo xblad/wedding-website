@@ -1,12 +1,11 @@
 ﻿import * as React from 'react';
 import { connect } from 'react-redux';
-import ReactPlayer from 'react-player';
 import { RouteComponentProps } from 'react-router';
 import { ApplicationState } from '../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt, faGlassCheers, faFrown } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarkerAlt, faGlassCheers, faFrown, faPlay, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
 import * as InvitationStore from '../store/InvitationStore';
-import promo from '../videos/Forever twenty.mp4';
+import promoVideo from '../videos/Forever_twenty.mp4';
 import './SaveTheDate.css';
 
 type SaveTheDateProps =
@@ -15,9 +14,61 @@ type SaveTheDateProps =
     RouteComponentProps<{ invitationGuid: string }>;
 
 class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
+    promo: HTMLVideoElement | null = null;
+    promoPlayPauseButton: HTMLDivElement | null = null;
+    promoUnmuteButton: HTMLDivElement | null = null;
+
     // This method is called when the component is first added to the document
     public componentDidMount() {
         this.ensureDataFetched();
+        this.ensureAutoplay();
+    }
+
+    private async ensureAutoplay() {
+        if (this.promo == null) return;
+        let promoTag : any = document.getElementById("promo");
+        if (promoTag !== null) {
+            promoTag.disablePictureInPicture = true;
+            promoTag.disableRemotePlayback = true;
+        }
+
+        try {
+            await this.promo.play();
+        }
+        catch {
+            this.promo.muted = true;
+            try {
+                await this.promo.play();
+            }
+            catch {
+                this.promo.muted = false;
+                if (this.promoPlayPauseButton) {
+                    this.promoPlayPauseButton.hidden = false;
+                }
+            }
+        }
+
+        if (this.promo.muted && this.promoUnmuteButton) {
+            this.promoUnmuteButton.hidden = false;
+        }
+
+    }
+
+    private promoPlayPause(e?: any) {
+        if (!this.promo || !this.promoPlayPauseButton || !this.promoUnmuteButton) return;
+
+        if (this.promo.paused) {
+            this.promo.play();
+            this.promoPlayPauseButton.hidden = true;
+        }
+        else if (this.promo.muted) {
+            this.promo.muted = false;
+            this.promoUnmuteButton.hidden = true;
+        }
+        else {
+            this.promo.pause();
+            this.promoPlayPauseButton.hidden = false;
+        }
     }
 
     // This method is called when the route parameters change
@@ -31,8 +82,22 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
     public render() {
         return (
             <React.Fragment>
-                <div>
-                    <ReactPlayer id="promo" className="mx-auto" width="90%" height="100%" url={promo} playing muted loop />
+                <div id="promo-wrapper" className="d-flex" onClick={e => this.promoPlayPause(e)}>
+                    <video id="promo" className="mx-auto"
+                        width="90%" height="100%" loop
+                        playsInline controlsList="nodownload nofullscreen noremoteplayback"
+                        onPause={this.promoPlayPause} onVolumeChange={this.promoPlayPause}
+                        ref={v => this.promo = v} >
+                        <source src={promoVideo} type="video/mp4" />
+                    </video>
+                    <div id="promo-playpause" className="row justify-content-center align-self-center"
+                        hidden ref={b => this.promoPlayPauseButton = b}>
+                        <FontAwesomeIcon className="fa-4x" icon={faPlay} />
+                    </div>
+                    <div id="promo-unmute" className="row"
+                        hidden ref={b => this.promoUnmuteButton = b}>
+                        <FontAwesomeIcon className="fa-2x" icon={faVolumeMute} />
+                    </div>
                 </div>
                 <div className="info row">
                     <div className="text-center col-lg">
