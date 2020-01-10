@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faGlassCheers, faFrown, faPlay, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
 import * as InvitationStore from '../store/InvitationStore';
 import promoVideo from '../videos/Forever_twenty.mp4';
+import promoPoster from '../videos/posters/Forever_twenty_poster.jpg';
 import './SaveTheDate.css';
 
 type SaveTheDateProps =
@@ -15,8 +16,8 @@ type SaveTheDateProps =
 
 class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
     promo: HTMLVideoElement | null = null;
-    promoPlayPauseButton: HTMLDivElement | null = null;
-    promoUnmuteButton: HTMLDivElement | null = null;
+    promoPauseIndicator: HTMLDivElement | null = null;
+    promoMuteIndicator: HTMLDivElement | null = null;
 
     // This method is called when the component is first added to the document
     public componentDidMount() {
@@ -26,48 +27,66 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
 
     private async ensureAutoplay() {
         if (this.promo == null) return;
+        let v = this.promo;
         let promoTag : any = document.getElementById("promo");
         if (promoTag !== null) {
             promoTag.disablePictureInPicture = true;
             promoTag.disableRemotePlayback = true;
         }
 
+        let promoUpdateControls = () =>
+            this.updatePromoIndicators(this.promo, this.promoPauseIndicator, this.promoMuteIndicator);
+        v.addEventListener("play", promoUpdateControls, true);
+        v.addEventListener("pause", promoUpdateControls, true);
+        v.addEventListener("volumechange", promoUpdateControls, true);
+
         try {
-            await this.promo.play();
+            await v.play();
         }
         catch {
-            this.promo.muted = true;
+            v.muted = true;
             try {
-                await this.promo.play();
+                await v.play();
             }
             catch {
-                this.promo.muted = false;
-                if (this.promoPlayPauseButton) {
-                    this.promoPlayPauseButton.hidden = false;
-                }
+                v.muted = false;
             }
-        }
-
-        if (this.promo.muted && this.promoUnmuteButton) {
-            this.promoUnmuteButton.hidden = false;
         }
 
     }
 
-    private promoPlayPause(e?: any) {
-        if (!this.promo || !this.promoPlayPauseButton || !this.promoUnmuteButton) return;
+    private promoPlayPauseMute(v: HTMLVideoElement | null, pauseIndicator: HTMLDivElement | null, muteIndicator: HTMLDivElement | null) {
 
-        if (this.promo.paused) {
-            this.promo.play();
-            this.promoPlayPauseButton.hidden = true;
+        if (!v || !pauseIndicator || !muteIndicator)
+            return;
+
+        if (v.paused) {
+            v.play();
         }
-        else if (this.promo.muted) {
-            this.promo.muted = false;
-            this.promoUnmuteButton.hidden = true;
+        else if (v.muted) {
+            v.muted = false;
         }
         else {
-            this.promo.pause();
-            this.promoPlayPauseButton.hidden = false;
+            v.pause();
+        }
+    }
+
+    private updatePromoIndicators(v: HTMLVideoElement | null, pauseIndicator: HTMLDivElement | null, muteIndicator: HTMLDivElement | null) {
+
+        if (!v || !pauseIndicator || !muteIndicator)
+            return;
+
+        if (v.paused) {
+            muteIndicator.hidden = true;
+            pauseIndicator.hidden = false;
+        }
+        else if (v.muted) {
+            muteIndicator.hidden = false;
+            pauseIndicator.hidden = true;
+        }
+        else {
+            muteIndicator.hidden = true;
+            pauseIndicator.hidden = true;
         }
     }
 
@@ -82,20 +101,21 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
     public render() {
         return (
             <React.Fragment>
-                <div id="promo-wrapper" className="d-flex" onClick={e => this.promoPlayPause(e)}>
+                <div id="promo-wrapper" className="d-flex" onClick={e =>
+                    this.promoPlayPauseMute(this.promo, this.promoPauseIndicator, this.promoMuteIndicator)}>
                     <video id="promo" className="mx-auto"
                         width="90%" height="100%" loop
                         playsInline controlsList="nodownload nofullscreen noremoteplayback"
-                        onPause={this.promoPlayPause} onVolumeChange={this.promoPlayPause}
+                        poster={promoPoster}
                         ref={v => this.promo = v} >
                         <source src={promoVideo} type="video/mp4" />
                     </video>
                     <div id="promo-playpause" className="row justify-content-center align-self-center"
-                        hidden ref={b => this.promoPlayPauseButton = b}>
+                        hidden ref={b => this.promoPauseIndicator = b}>
                         <FontAwesomeIcon className="fa-4x" icon={faPlay} />
                     </div>
                     <div id="promo-unmute" className="row"
-                        hidden ref={b => this.promoUnmuteButton = b}>
+                        hidden ref={b => this.promoMuteIndicator = b}>
                         <FontAwesomeIcon className="fa-2x" icon={faVolumeMute} />
                     </div>
                 </div>
