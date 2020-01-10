@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faGlassCheers, faFrown, faPlay, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
 import * as InvitationStore from '../store/InvitationStore';
 import promoVideo from '../videos/Forever_twenty.mp4';
-import promoPoster from '../videos/posters/Forever_twenty_poster.jpg';
 import './SaveTheDate.css';
 
 type SaveTheDateProps =
@@ -106,7 +105,6 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
                     <video id="promo" className="mx-auto"
                         width="90%" height="100%" loop
                         playsInline controlsList="nodownload nofullscreen noremoteplayback"
-                        poster={promoPoster}
                         ref={v => this.promo = v} >
                         <source src={promoVideo} type="video/mp4" />
                     </video>

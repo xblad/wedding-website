@@ -144,10 +144,6 @@ input[type=text]:disabled {
     }
 }
 
-#promo {
-    width: 100%;
-}
-
 #promo-wrapper {
     position: relative;
     width: 100%;
