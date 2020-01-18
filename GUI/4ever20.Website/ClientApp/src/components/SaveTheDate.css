@@ -13,6 +13,12 @@ body {
     color: white;
 }
 
+@media(min-width: 992px) {
+    .container {
+        zoom: .75;
+    }
+}
+
 ::-moz-selection {
     background: var(--yellow-color);
 }
@@ -57,23 +63,20 @@ body {
     margin: 0 .25em;
 }
 
-.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
-    background: var(--cyan-color) !important;
-    text-shadow: 0 0 .1em #000 !important;
-    border: 0;
-    box-shadow: 0 0 .15em var(--cyan-opacity-color) !important;
+#invitationBorder {
+    padding: 2em;
 }
 
-.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited {
-    background: var(--magenta-color) !important;
-    text-shadow: 0 0 .1em #000 !important;
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+    background: white !important;
+    color: black !important;
     border: 0;
-    box-shadow: 0 0 .15em var(--magenta-opacity-color) !important;
+    font-weight: bolder;
 }
 
 .btn-link, .btn-link:hover, .btn-link:active, .btn-link:visited {
-    color: var(--magenta-color) !important;
-    text-shadow: 0 0 .15em var(--magenta-opacity-color) !important;
+    color: white !important;
+    font-weight: bolder;
 }
 
 label {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { ApplicationState } from '../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt, faGlassCheers, faFrown, faPlay, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarkerAlt, faGlassCheers, faFrown, faPlay, faVolumeMute, faSmileBeam, faHeartBroken } from '@fortawesome/free-solid-svg-icons';
 import * as InvitationStore from '../store/InvitationStore';
 import promoVideo from '../videos/Forever_twenty.mp4';
 import './SaveTheDate.css';
@@ -103,7 +103,7 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
                 <div id="promo-wrapper" className="d-flex" onClick={e =>
                     this.promoPlayPauseMute(this.promo, this.promoPauseIndicator, this.promoMuteIndicator)}>
                     <video id="promo" className="mx-auto"
-                        width="90%" height="100%" loop
+                        width="100%" height="100%" loop
                         playsInline controlsList="nodownload nofullscreen noremoteplayback"
                         ref={v => this.promo = v} >
                         <source src={promoVideo} type="video/mp4" />
@@ -127,32 +127,32 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
                             <span className="yellow">20</span></h1>
                         <p><FontAwesomeIcon className="magenta" icon={faMapMarkerAlt}/> Prague</p>
                     </div>
-                    <div className="form-group text-center col my-auto">
+                    <div id="invitationBorder" className="form-group text-center col my-auto">
                         {(() => {
-                            if (!this.props.invitationObject || !this.props.invitationObject.invitationGuid)
-                                return <div>
-                                    <input type="text" className="form-control text-center"
-                                        placeholder="Invitation ID" title="ID Приглашения"
-                                        value={this.props.invitationObject && this.props.invitationObject.invitationGuid}
-                                        onChange={event => this.props.requestInvitation(event.target.value)}
-                                        ref={(input) => { input && input.focus() }}
-                                        disabled={this.props.isLoading} />
-                                </div>;
-                            else if (this.props.invitationObject.isGoing === true)
-                                return <div>
-                                    <h3 title={this.props.invitationObject.firstName + ', спасибо, что почтите нас своим присутствием! Увидимся :)'}>{this.props.invitationObject.firstName}, thanks for indicating you are coming! See ya <FontAwesomeIcon className="yellow" icon={faGlassCheers} /></h3>
-                                </div>;
-                            else if (this.props.invitationObject.isGoing === false)
-                                return <div>
-                                    <h3 title={this.props.invitationObject.firstName + ', очень жаль, что не придете :('}>{this.props.invitationObject.firstName}, it's a shame you're not coming <FontAwesomeIcon className="yellow" icon={faFrown} /></h3>
-                                </div>;
-                            else
-                                return <div>
-                                    <p className="mb-3" title={this.props.invitationObject.firstName + ', пожалуйста дайте нам знать, если придёте'}>Dear {this.props.invitationObject.firstName}, please indicate your attendance</p>
-                                    <button type="button" className="btn btn-success btn-lg ml-3" onClick={() => { this.props.indicateAttendance(true); }} title="Я в деле!" disabled={this.props.isLoading} >I'm in</button>
-                                    <button type="button" className="btn btn-link btn-lg ml-3" onClick={() => { this.props.indicateAttendance(false); }} title="Не могу прийти :(" disabled={this.props.isLoading} >Sorry, can't make it</button>
-                                </div>;
-                        })()}
+                        if (!this.props.invitationObject || !this.props.invitationObject.invitationGuid)
+                            return <div>
+                                <input type="text" className="form-control text-center"
+                                    placeholder="ID Приглашения" title="Invitation ID"
+                                    value={this.props.invitationObject && this.props.invitationObject.invitationGuid}
+                                    onChange={event => this.props.requestInvitation(event.target.value)}
+                                    ref={(input) => { input && input.focus() }}
+                                    disabled={this.props.isLoading} />
+                            </div>;
+                        else if (this.props.invitationObject.isGoing === true)
+                            return <div>
+                                <h3>{this.props.invitationObject.firstName}, спасибо, что почтите нас своим присутствием! Увидимся <FontAwesomeIcon className="yellow" icon={faGlassCheers} /></h3>
+                            </div>;
+                        else if (this.props.invitationObject.isGoing === false)
+                            return <div>
+                                <h3>{this.props.invitationObject.firstName}, очень жаль, что не придете <FontAwesomeIcon className="yellow" icon={faFrown} /></h3>
+                            </div>;
+                        else
+                            return <div>
+                                <p className="mb-3">Привет, {this.props.invitationObject.firstName}! Согласны ли Вы стать гостем на нашей свадьбе?</p>
+                                <button type="button" className="btn btn-success btn-lg ml-3" onClick={() => { this.props.indicateAttendance(true); }} disabled={this.props.isLoading} >Да <FontAwesomeIcon className="yellow" icon={faSmileBeam} /></button>
+                                <button type="button" className="btn btn-link btn-lg ml-3" onClick={() => { this.props.indicateAttendance(false); }} disabled={this.props.isLoading} >Нет <FontAwesomeIcon className="magenta" icon={faHeartBroken} /></button>
+                            </div>;
+                            })()}
                     </div>
                 </div>
             </React.Fragment>
