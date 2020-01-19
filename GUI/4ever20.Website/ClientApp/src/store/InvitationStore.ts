@@ -1,6 +1,6 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
-import { error } from 'util';
+import history from '../history';
 
 const invitationRegex = /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/;
 // -----------------
@@ -57,9 +57,11 @@ export const actionCreators = {
                     return response.json() as Promise<Invitation>
                 })
                 .then(invitationData => {
+                    history.replace(`/save-the-date/${invitationGuid}`);
                     dispatch({ type: 'RECEIVE_INVITATION', invitation: invitationData });
                 })
                 .catch(() => {
+                    history.replace(`/save-the-date/`);
                     dispatch({ type: 'FAILED', error: `Invitation ID '${invitationGuid}' doesn't exist.` })
                 });
 

@@ -90,10 +90,7 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
     }
 
     // This method is called when the route parameters change
-    public componentDidUpdate(prevProps : SaveTheDateProps) {
-        this.ensureDataFetched();
-        if (!prevProps.invitationObject && this.props.invitationObject)
-            this.props.history.replace(`/save-the-date/${this.props.invitationObject.invitationGuid}`);
+    public componentDidUpdate(prevProps: SaveTheDateProps) {
         if (prevProps.lastError !== this.props.lastError) alert(this.props.lastError);
     }
 
@@ -160,7 +157,7 @@ class SaveTheDate extends React.PureComponent<SaveTheDateProps> {
     }
 
     private ensureDataFetched() {
-        const invitationGuid = this.props.match.params.invitationGuid;
+        let invitationGuid = this.props.match.params.invitationGuid;
         this.props.requestInvitation(invitationGuid);
     }
 };
