@@ -11,34 +11,26 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
     public render() {
         return (
             <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
+                <Navbar fixed="top" expand="sm" className="box-shadow mb-3 bg-dark navbar-toggleable-sm" dark>
                     <Container>
-                        <NavbarBrand tag={Link} to="/">Dan+Kate Wedding</NavbarBrand>
+                        <NavbarBrand tag={Link} to="/">Dan & Kate Wedding</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} className="mr-2"/>
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Важная информация</NavLink>
+                                    <NavLink tag={Link} className="text-light" to="/">Важная информация</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/preparation">Приятные хлопоты</NavLink>
+                                    <NavLink tag={Link} className="text-light" to="/preparation">Приятные хлопоты</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/day-x">День Икс</NavLink>
-                                </NavItem>
-                                {/*
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
+                                    <NavLink tag={Link} className="text-light" to="/day-x">День Икс</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                                </NavItem>
-                                */}
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/story">Наша история</NavLink>
+                                    <NavLink tag={Link} className="text-light" to="/story">Наша история</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/guests">Гости</NavLink>
+                                    <NavLink tag={Link} className="text-light" to="/guests">Гости</NavLink>
                                 </NavItem>
                             </ul>
                         </Collapse>
