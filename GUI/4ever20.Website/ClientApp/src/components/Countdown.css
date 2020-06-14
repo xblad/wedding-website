@@ -1,0 +1,23 @@
+﻿.jumbotron {
+    background: transparent;
+}
+
+.countdown-element {
+    display: inline-block;
+    margin: 0 10px;
+    text-align: center;
+}
+
+.react-countdown .digit {
+    font-size: 8vw !important;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+    font-family: 'Pacifico', cursive;
+}
+
+.react-countdown .text {
+    text-transform: uppercase;
+    margin: 0;
+    font-size: 3vw !important;
+}

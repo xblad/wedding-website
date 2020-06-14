@@ -30,9 +30,9 @@ const Timeline = () => (
                 entries.map((timelineEntry: TimelineEntry) =>
                     <div className="entry">
                         <div className="title">
-                            <h3>
+                            <h4>
                                 <FontAwesomeIcon className="yellow" icon={timelineEntry.icon} /> {timelineEntry.time}
-                            </h3>
+                            </h4>
                             <p>{timelineEntry.title}</p>
                         </div>
                         <div className="body">
