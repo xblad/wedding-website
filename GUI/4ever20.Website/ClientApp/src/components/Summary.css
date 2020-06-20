@@ -1,0 +1,36 @@
+﻿@media(min-width: 200px) {
+    #summary-names {
+        font-size: 17vw;
+    }
+}
+
+@media(min-width: 600px) {
+    #summary-names {
+        font-size: 6em;
+    }
+
+    #summary-body {
+        line-height: 2;
+    }
+}
+
+@media(min-width: 992px) {
+    #summary-appeal {
+        font-size: 2em;
+    }
+    #summary-names {
+        font-size: 10em;
+    }
+}
+
+#summary {
+    color: var(--chunk-color);
+    text-align: center;
+    padding: 2rem;
+}
+
+#summary-names {
+    font-family: 'Caravan';
+    color: var(--chunk-color);
+    margin-top: -.5em;
+}

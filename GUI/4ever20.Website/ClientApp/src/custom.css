@@ -1,12 +1,17 @@
-/* Provide sufficient contrast against white background */
 @font-face {
     font-family: 'Clip';
     src: local('Clip'), url(./fonts/clip.regular.ttf) format('truetype');
 }
 
+@font-face {
+    font-family: 'Caravan';
+    src: local('Caravan'), url(./fonts/Caravan.otf) format('opentype');
+}
+
 body {
-    background: black;
+    background: url(./images/bricks_background.jpeg);
     padding-top: 60px;
+    font-family: 'Open Sans';
 }
 
 a {
@@ -21,4 +26,8 @@ code {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+.carousel {
+    box-shadow: -1px 0px 20px 0px #000;
 }

@@ -41,6 +41,7 @@ $dot-diameter: 10px;
         text-align: right;
         position: relative;
         color: var(--cyan-color);
+        font-family: 'Pacifico';
 
         &:before {
             content: '';
@@ -74,7 +75,6 @@ $dot-diameter: 10px;
 
         h3 {
             line-height: 1.4em;
-            font-family: 'Pacifico', cursive;
 
             &:first-child {
                 margin-top: 0;

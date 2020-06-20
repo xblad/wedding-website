@@ -5,7 +5,6 @@ import Info from './components/Info';
 import Preparation from './components/Preparation';
 import DayX from './components/DayX';
 import SaveTheDate from './components/SaveTheDate';
-import OurStory from './components/OurStory';
 import Guests from './components/Guests';
 import './custom.css';   
 
@@ -14,7 +13,6 @@ export default () => (
         <Route exact path='/' component={Info} />
         <Route exact path='/preparation' component={Preparation} />
         <Route exact path='/day-x' component={DayX} />
-        <Route path='/story' component={OurStory} />
         <Route path='/guests' component={Guests} />
         <Route path="/save-the-date/:invitationGuid?" component={SaveTheDate} />
     </Layout>

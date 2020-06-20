@@ -1,0 +1,7 @@
+﻿#notes {
+    font-size: 1.3em;
+}
+
+#notes > li {
+    text-align: justify;
+}

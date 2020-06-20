@@ -23,7 +23,7 @@ const entries = [
 ];
 
 const Timeline = () => (
-    <div>
+    <div id="timeline">
         <h1>Наш День</h1>
         <div className="timeline">
             {

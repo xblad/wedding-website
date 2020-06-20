@@ -4,6 +4,7 @@ import Summary from './Summary';
 import PhotoCarousel from './PhotoCarousel';
 import Countdown from './Countdown';
 import Timeline from './Timeline';
+import Rules from './Rules';
 
 const Info = () => (
     <div>
@@ -11,6 +12,7 @@ const Info = () => (
         <PhotoCarousel />
         <Countdown />
         <Timeline />
+        <Rules />
     </div>
 );
 
