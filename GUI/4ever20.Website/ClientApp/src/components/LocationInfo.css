@@ -1,0 +1,75 @@
+﻿
+
+.add-to-calendar-button {
+    border: 1px solid #E5E5E5;
+    color: #E42D2D;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 3px;
+    width: 300px;
+    height: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.add-to-calendar-button:focus {
+    outline: none;
+}
+.add-to-calendar-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    height: 375px;
+    margin: 0 auto;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    position: absolute;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    background-color: #FFF;
+}
+
+.add-to-calendar-modal:focus {
+    outline: none;
+}
+
+.add-to-calendar-component {
+}
+
+.add-to-calendar-link {
+    text-decoration: none;
+    display: block;
+    color: #E42D2D;
+    font-size: 18px;
+    text-align: center;
+    padding: 6px;
+}
+
+.add-to-calendar-link:hover {
+    text-decoration: none;
+    color: #ff0000;
+}
+
+.add-to-calendar-dropdown {
+    padding: 10px;
+    border: 1px solid #E5E5E5;
+    border-top: none;
+    width: 300px;
+    background-color: #FFF;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .add-to-calendar-component {
+        width: 50%;
+    }
+
+    .add-to-calendar-modal {
+        width: 400px;
+    }
+}

@@ -32,6 +32,9 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                                     <NavHashLink smooth className="text-light nav-link" to="/#notes">Подсказки и пожелания</NavHashLink>
                                 </NavItem>
                                 <NavItem>
+                                    <NavHashLink smooth className="text-light nav-link" to="/#location">Место и время</NavHashLink>
+                                </NavItem>
+                                <NavItem>
                                     <NavLink tag={Link} className="text-light" to="/photos">Фотографии</NavLink>
                                 </NavItem>
                             </ul>
