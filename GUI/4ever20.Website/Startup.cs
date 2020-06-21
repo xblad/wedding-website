@@ -1,5 +1,6 @@
 using _4ever20.Data.Databases;
 using _4ever20.Guests;
+using _4ever20.Photos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -33,6 +34,7 @@ namespace _4ever20.Website
             string connectionString = Configuration.GetConnectionString("4EVER20");
             services.AddSingleton<IDatabase>(d => new SqlServerDatabase(connectionString));
             services.AddSingleton<IGuestsService, GuestsService>();
+            services.AddSingleton<IPhotoGalleryService, PhotoGalleryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

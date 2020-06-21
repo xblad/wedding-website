@@ -1,7 +1,9 @@
 ﻿#notes {
     font-size: 1.3em;
+    background: rgba(9, 251, 211, .1);
+    margin: 1em 0;
 }
 
-#notes > li {
+#notes > ul > li {
     text-align: justify;
 }

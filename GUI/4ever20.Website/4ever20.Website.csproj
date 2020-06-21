@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Guests\4ever20.Guests\4ever20.Guests.csproj" />
+    <ProjectReference Include="..\..\Core\Photos\4ever20.Photos\4ever20.Photos.csproj" />
   </ItemGroup>
 
   <ItemGroup>

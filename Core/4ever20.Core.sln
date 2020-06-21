@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "4ever20.GuestsTests", "Test
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "4ever20.SqlServerDatabase", "4ever20.SqlServerDatabase\4ever20.SqlServerDatabase.sqlproj", "{D6767E88-5167-4BA3-BE77-61AF1D29101C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "4ever20.Photos", "Photos\4ever20.Photos\4ever20.Photos.csproj", "{57575777-A418-41EE-81BA-86DCD4C5D42C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{D6767E88-5167-4BA3-BE77-61AF1D29101C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6767E88-5167-4BA3-BE77-61AF1D29101C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6767E88-5167-4BA3-BE77-61AF1D29101C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{57575777-A418-41EE-81BA-86DCD4C5D42C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57575777-A418-41EE-81BA-86DCD4C5D42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57575777-A418-41EE-81BA-86DCD4C5D42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57575777-A418-41EE-81BA-86DCD4C5D42C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

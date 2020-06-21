@@ -29,11 +29,11 @@ const Summary = () => (
             <Row className="lead">
                 <Col>
                     <NavLink className="text-light" href='https://www.instagram.com/explore/tags/4ever20wedding/' target="_blank">
-                        <h5 style={{ marginTop: 20 }}>
+                        <h4 style={{ marginTop: 20 }}>
                             <FontAwesomeIcon className="cyan" icon={faInstagram} />
                             &nbsp;
                             #4ever20wedding
-                        </h5>
+                        </h4>
                     </NavLink>
                 </Col>
             </Row>

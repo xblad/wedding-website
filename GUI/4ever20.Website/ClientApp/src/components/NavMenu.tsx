@@ -1,5 +1,6 @@
 ﻿import * as React from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
 import './NavMenu.css';
 
@@ -29,6 +30,9 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                                 </NavItem>
                                 <NavItem>
                                     <NavHashLink smooth className="text-light nav-link" to="/#notes">Подсказки и пожелания</NavHashLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={Link} className="text-light" to="/photos">Фотографии</NavLink>
                                 </NavItem>
                             </ul>
                         </Collapse>
