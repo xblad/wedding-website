@@ -6,6 +6,8 @@ import Countdown from './Countdown';
 import Timeline from './Timeline';
 import Rules from './Rules';
 import LocationInfo from './LocationInfo';
+import Sponsors from './Sponsors';
+import Gifts from './Gifts';
 
 const Info = () => (
     <div>
@@ -15,6 +17,8 @@ const Info = () => (
         <Timeline />
         <Rules />
         <LocationInfo />
+        <Sponsors />
+        <Gifts />
     </div>
 );
 

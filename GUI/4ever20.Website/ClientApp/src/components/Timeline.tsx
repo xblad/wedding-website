@@ -24,7 +24,7 @@ const entries = [
 
 const Timeline = () => (
     <div id="timeline">
-        <h1>Наш День</h1>
+        <h1>Наш день</h1>
         <div className="timeline">
             {
                 entries.map((timelineEntry: TimelineEntry) =>
