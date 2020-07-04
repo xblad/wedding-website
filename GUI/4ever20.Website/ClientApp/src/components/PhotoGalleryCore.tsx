@@ -24,7 +24,6 @@ const PhotoGalleryCore = ({ photoList }: { photoList: PhotoStore.Photo[] }) => {
     return (
         <div>
             <Jumbotron className="text-center">
-                <h3 style={{ fontFamily: 'Pacifico' }}>Здесь вы сможете найти фотографии праздника</h3>
                 <NavLink className="text-light" href='https://www.instagram.com/explore/tags/4ever20wedding/' target="_blank">
                     <h1 style={{ marginTop: 20 }}>
                         <FontAwesomeIcon className="cyan" icon={faInstagram} />
@@ -32,6 +31,7 @@ const PhotoGalleryCore = ({ photoList }: { photoList: PhotoStore.Photo[] }) => {
                         #4ever20wedding
                     </h1>
                 </NavLink>
+                <h3 style={{ fontFamily: 'Pacifico' }}>Ниже вы сможете найти фотографии праздника</h3>
             </Jumbotron>
             <Gallery photos={photoList} onClick={openLightbox} />
             <ModalGateway>

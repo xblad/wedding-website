@@ -5,7 +5,12 @@ import { faMapMarkerAlt, faCalendarAlt, faClock } from '@fortawesome/free-solid-
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { Container, Row, Col } from 'reactstrap';
 import { NavLink } from 'reactstrap';
+import { NavHashLink } from 'react-router-hash-link';
 import './Summary.css';
+
+const LocationLink = (props: { children?: React.ReactNode }) => (
+    <NavHashLink smooth className="text-light" to="/#location">{props.children}</NavHashLink>
+)
 
 const Summary = () => (
     <div id="summary">
@@ -22,9 +27,9 @@ const Summary = () => (
                 </Col>
             </Row>
             <Row>
-                <Col sm className="lead m-3"><h4><FontAwesomeIcon className="cyan" icon={faCalendarAlt} /> 4 августа 2020 года</h4></Col>
-                <Col sm className="lead m-3"><h4><FontAwesomeIcon className="magenta" icon={faMapMarkerAlt} /> Вилла Seven Hills, Прага</h4></Col>
-                <Col sm className="lead m-3"><h4><FontAwesomeIcon className="yellow" icon={faClock} /> Сбор гостей 15:00</h4></Col>
+                <Col sm className="lead m-3"><LocationLink><FontAwesomeIcon className="cyan" icon={faCalendarAlt} /> 4 августа 2020 года</LocationLink></Col>
+                <Col sm className="lead m-3"><LocationLink><FontAwesomeIcon className="magenta" icon={faMapMarkerAlt} /> Вилла Seven Hills, Прага</LocationLink></Col>
+                <Col sm className="lead m-3"><LocationLink><FontAwesomeIcon className="yellow" icon={faClock} /> Сбор гостей 15:00</LocationLink></Col>
             </Row>
             <Row className="lead">
                 <Col>

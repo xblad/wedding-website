@@ -7,7 +7,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import history from './history';
 import configureStore from './store/configureStore';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import { unregister } from './registerServiceWorker';
 
 // Get the application-wide store instance, prepopulating with state from the server where available.
 const store = configureStore(history);
@@ -20,4 +20,4 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('root'));
 
-registerServiceWorker();
+unregister();

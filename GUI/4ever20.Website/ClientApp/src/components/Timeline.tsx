@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition, faBirthdayCake, faWineGlassAlt, faHeart, faUtensils, faCocktail, faSwimmingPool, faMoon } from '@fortawesome/free-solid-svg-icons';
 import './Timeline.scss';
+import { Jumbotron } from 'reactstrap';
 
 export interface TimelineEntry {
     icon: IconDefinition;
@@ -23,16 +24,16 @@ const entries = [
 ];
 
 const Timeline = () => (
-    <div id="timeline">
+    <Jumbotron id="timeline">
         <h1>Наш день</h1>
         <div className="timeline">
             {
                 entries.map((timelineEntry: TimelineEntry) =>
                     <div className="entry">
                         <div className="title">
-                            <h4>
+                            <h5>
                                 <FontAwesomeIcon className="yellow" icon={timelineEntry.icon} /> {timelineEntry.time}
-                            </h4>
+                            </h5>
                             <p>{timelineEntry.title}</p>
                         </div>
                         <div className="body">
@@ -46,7 +47,7 @@ const Timeline = () => (
                 )
             }
         </div>
-    </div>
+    </Jumbotron>
 )
 
 export default connect()(Timeline);
