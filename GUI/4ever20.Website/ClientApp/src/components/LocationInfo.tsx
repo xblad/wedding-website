@@ -63,7 +63,7 @@ const AddToCalendar = AddToCalendarHOC(Button, Dropdown);
 const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 const LocationInfo = () => (
-    <Container id="location" className="m-5">
+    <Container id="location" className="my-5">
         <Row>
             <Col sm="8">
                 <iframe
