@@ -39,7 +39,7 @@ const renderer = ({ days, hours, minutes, seconds, completed } : CountdownRender
 
 const Countdown = () => (
     <ReactCountdown
-        date={new Date('2020-08-04 16:08')}
+        date={new Date('2020-08-04T16:08:00+02:00')}
         renderer={renderer}
     />
 )
