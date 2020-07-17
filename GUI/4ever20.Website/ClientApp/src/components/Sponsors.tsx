@@ -6,7 +6,9 @@ import placeImgSrc from '../images/sponsors/place.jpg';
 import cateringImgSrc from '../images/sponsors/catering.png';
 import barmanImgSrc from '../images/sponsors/barman.jpg';
 import decoratorImgSrc from '../images/sponsors/decorator.jpg';
+import inspiringPhotographerImgSrc from '../images/sponsors/inspiring_photographer.jpg';
 import photographerImgSrc from '../images/sponsors/photographer.jpg';
+import videographerImgSrc from '../images/sponsors/videographer.jpg';
 import makeupImgSrc from '../images/sponsors/makeup.jpg';
 import bandImgSrc from '../images/sponsors/band.jpg';
 import dressImgSrc from '../images/sponsors/dress.png';
@@ -38,7 +40,8 @@ const Sponsors = () => (
                 <Col sm><SponsorImg href="https://www.streetcatering.cz/" title="Street Catering — Еда" src={cateringImgSrc}/></Col>
                 <Col sm><SponsorImg href="https://www.instagram.com/kealtozet/" title="Никита Парфенов — Бармен" src={barmanImgSrc}/></Col>
                 <Col sm><SponsorImg href="https://www.instagram.com/pragueflowers_pg/" title="Petr Grena — Декоратор" src={decoratorImgSrc} /></Col>
-                <Col sm><SponsorImg href="https://feelingsfotolab.com/" title="Ксения Аникеева — Фотограф" src={photographerImgSrc} /></Col>
+                <Col sm><SponsorImg href="http://annitum.com/" title="Анни Кайвомага — Видеограф" src={videographerImgSrc} /></Col>
+                <Col sm><SponsorImg href="https://adamovafoto.com/" title="Дарья Адамова — Фотограф" src={photographerImgSrc} /></Col>
             </Row>
             <Row>
                 <Col sm><SponsorImg href="https://www.instagram.com/by_dolphin_ns/" title="Анастасия Щукова — Бьюти Гуру" src={makeupImgSrc} /></Col>
@@ -47,6 +50,7 @@ const Sponsors = () => (
                 <Col sm><SponsorImg original href="https://www.sladkedortikytali.cz/" title="Dorty Tali — Свадебный Торт" src={cakeImgSrc} /></Col>
                 <Col sm><SponsorImg href="https://www.maximuminventory.cz/" title="Maximum Inventory — Мебель" src={inventoryImgSrc} /></Col>
                 <Col sm><SponsorImg href="https://www.instagram.com/alinadooplo/" title="Алина Лапаева — Роспись Одежды" src={clothingArtImgSrc} /></Col>
+                <Col sm><SponsorImg href="https://feelingsfotolab.com/" title="Ксения Аникеева — Вдохновляющий Фотограф" src={inspiringPhotographerImgSrc} /></Col>
             </Row>
         </Container>
     </Jumbotron>
