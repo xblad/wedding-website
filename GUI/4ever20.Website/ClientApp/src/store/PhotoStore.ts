@@ -39,7 +39,7 @@ type KnownAction = RequestPhotosAction | ReceivePhotosAction;
 export const actionCreators = {
     requestPhotos: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let state = getState();
-        if (state && state.photos && !state.photos.photoList.length) {
+        if (state && state.photos && !state.photos.isLoading && !state.photos.photoList.length) {
             fetch(`api/photoGallery`)
                 .then(response => response.json() as Promise<Photo[]>)
                 .then(data => {

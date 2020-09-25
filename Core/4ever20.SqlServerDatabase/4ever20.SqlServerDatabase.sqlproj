@@ -177,6 +177,7 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
+    <Build Include="dbo\Stored Procedures\sp_GetPhotoGalleryLastWrite.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="4ever20.SqlServerDatabase.publish.xml" />
